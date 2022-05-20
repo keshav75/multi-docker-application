@@ -1,0 +1,23 @@
+version: 2.1
+
+jobs:
+  client_testing:
+    docker:
+     - image: cimg/base:2022.03
+     steps:
+      - checkout
+      - setup_remote_docker:
+          version: "20.20.11"
+      - run:
+          command: docker build -t keshavjangid/client-test -f ./client-typescript/D
+          name: building the client for testing
+      - run:
+          command: docker run keshavjangid/client-test npm test
+          name: run the client test 
+
+
+workflow:
+  version: 2
+  testing:
+    jobs:
+      - client_testing
